@@ -41,3 +41,5 @@ WHERE
 `Step 5:` Access the front-end web page:
 
 `http://localhost:8080/`
+
+![1 40-05](https://user-images.githubusercontent.com/1110569/192336149-68a1e69d-9689-477d-9047-8e3899b933c3.png)
