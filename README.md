@@ -34,7 +34,7 @@ To change the port on which the web server is listening, add the following to th
 
 WHERE
 
-**`<port_number>` is the number of the port for the web server.
+`<port_number>` is the number of the port for the web server.
 
 ---
 
