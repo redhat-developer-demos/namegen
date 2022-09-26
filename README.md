@@ -1,5 +1,5 @@
 # random-name-gen-app
-A demonstration project that has an API backend using MongoDB and an HTML front end, all running from the same server. 
+A demonstration project that has an API backend that binds to an instance of a MongoDB database and an HTML front end, all running from the same code base. The behavior of the UI is that it generates and stores a random name according to a series of button clicks.
 
 
 ## Get up and running
