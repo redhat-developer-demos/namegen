@@ -12,11 +12,11 @@ let connection;
 const getConnection = async () => {
     if (!connection) {
         let mStr = process.env.MONGODB_URL;
-        //if the last character is not a /, add one
-        if( mStr.substr(mStr.length - 1) !== "/") {
-            mStr = mStr + "/";
+        let url = mStr;
+        //make sure there is a database name in play
+        if(mStr.substring(mStr.length - dbName.length) !== dbName){
+            url = path.join(mStr, dbName)
         }
-        const url = `${mStr}${dbName}`;
         let conn;
         logger.info(`Attempting to connect at url: ${url}.`)
         conn = await mongoose.connect(url).catch(e =>{
