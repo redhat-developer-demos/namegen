@@ -1,0 +1,24 @@
+{
+  "name": "name-gen",
+  "version": "1.0.0",
+  "description": "A demonstration application for automatically generating names for storage in a database",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Bob Reselman <reselbob@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@faker-js/faker": "^7.5.0",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "html": "^1.0.0",
+    "mongoose": "^6.6.1",
+    "mongoose-lean-virtuals": "^0.9.1",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0"
+  }
+}

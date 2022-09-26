@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Random Name Generator and Saver</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<style>
+    #mainDiv {
+        list-style-type: upper-roman;
+        padding-left: 50px;
+        color: #000080;
+    }
+</style>
+<body onload="getNames()">
+<div id="mainDiv">
+<h1>Random Name Generator and Saver</h1>
+<p>1. Click this button to get a random name:<br/>
+    <button type="button" id="btnRandom"  onclick="getRandomName()">Get Random Name</button>
+    <br/>
+<div id="'randomName">
+    <span>First Name: </span><span id="firstName"></span>
+    <br/>
+    <span>Last Name: </span><span id="lastName"></span>
+</div>
+</p>
+<hr>
+<p>2. Click this button save the random name to a database:<br/>
+    <button id="btnSave" type="button" onclick="saveName()" disabled>Save Name</button>
+    <div id="saveResponse"></div>
+</p>
+<hr>
+<p>List of Names:<br/>
+    <!--
+    <button type="button" onclick="getNames()">See All Names</button>
+    <br/>
+    -->
+    <div id='namesList'></div>
+</p>
+<hr>
+<p>Optional: Clear the list data from the database:<br/>
+    <button type="button" onclick="clearNames()">Clear Names from DB</button>
+<div id="deleteResponse"></div>
+
+</p>
+</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+<script>
+    function clearNames() {
+        $.ajax({
+            url: '/api/names',
+            type: 'DELETE',
+            success: function(data) {
+                document.getElementById('namesList').children[0].remove();
+                document.getElementById('deleteResponse').innerText = "All names deleted"
+                document.getElementById('firstName').innerText = ''
+                document.getElementById('lastName').innerText = '';
+
+
+                //toggle the btnRandom and btnSave buttons
+                document.getElementById('btnRandom').disabled = false;
+                document.getElementById('btnSave').disabled = !document.getElementById('btnRandom').disabled ;
+            }
+        });
+    }
+
+
+    function getRandomName() {
+        const apiUrl = '/api/random_name';
+        fetch(apiUrl).then(response => {
+            return response.json();
+        }).then(data => {
+            document.getElementById('firstName').innerText = data.firstName;
+            document.getElementById('lastName').innerText = data.lastName;
+            // Work with JSON data here
+            logger.info(data);
+        }).catch(err => {
+            // Do something for an error here
+        });
+
+        //toggle the btnRandom and btnSave buttons
+        document.getElementById('btnRandom').disabled = true;
+        document.getElementById('btnSave').disabled = !document.getElementById('btnRandom').disabled ;
+    }
+
+    function saveName() {
+        const firstName = document.getElementById('firstName').innerText;
+        const lastName = document.getElementById('lastName').innerText;
+        const settings = {
+            "url": "/api/names",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify({"firstName":firstName,"lastName": lastName}),
+        };
+        $.ajax({
+            ...settings,
+            success: function (result) {
+                document.getElementById('saveResponse').innerText = `${firstName} ${lastName} as been saved!`;
+                getNames();
+            },
+            error : function (){
+                document.getElementById('saveResponse').innerText = `Save did not happen.`;
+            }
+        })
+        //toggle the btnRandom and btnSave buttons
+        document.getElementById('btnRandom').disabled = false;
+        document.getElementById('btnSave').disabled = !document.getElementById('btnRandom').disabled ;
+    }
+
+    function printNames(names) {
+        const parent = document.getElementById('namesList');
+        // clear the existing tree
+        if( parent.children && parent.children.length > 0){
+            parent.children[0].remove();
+        }
+        const ul = document.createElement("ul");
+        names.forEach( name => {
+            const li = document.createElement("li");
+            const text = document.createTextNode(`${name.firstName} ${name.lastName}`);
+            li.appendChild(text);
+            ul.appendChild(li);
+        })
+        parent.append(ul);
+    }
+
+    function getNames() {
+        document.getElementById('deleteResponse').innerText = '';
+        const apiUrl = '/api/names';
+        fetch(apiUrl).then(response => {
+            return response.json();
+        }).then(data => {
+            printNames(data);
+            logger.info(data);
+        }).catch(err => {
+            // Do something for an error here
+        });
+    }
+</script>
+</html>
