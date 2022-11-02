@@ -15,7 +15,7 @@ const getConnection = async () => {
         let url = mStr;
         //make sure there is a database name in play
         if(mStr.substring(mStr.length - dbName.length) !== dbName){
-            url = path.join(mStr, dbName)
+            url = mStr + '/' + dbName;
         }
         let conn;
         logger.info(`Attempting to connect at url: ${url}.`)
