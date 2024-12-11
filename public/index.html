@@ -54,7 +54,7 @@
             type: 'DELETE',
             success: function(data) {
                 document.getElementById('namesList').children[0].remove();
-                document.getElementById('deleteResponse').innerText = "All names deleted"
+                document.getElementById('deleteResponse').innerText = "All names have been deleted from database."
                 document.getElementById('firstName').innerText = ''
                 document.getElementById('lastName').innerText = '';
 
@@ -99,7 +99,7 @@
         $.ajax({
             ...settings,
             success: function (result) {
-                document.getElementById('saveResponse').innerText = `${firstName} ${lastName} as been saved!`;
+                document.getElementById('saveResponse').innerText = `${firstName} ${lastName}: Name has been saved to database.`;
                 getNames();
             },
             error : function (){
